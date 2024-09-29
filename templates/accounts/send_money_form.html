@@ -1,0 +1,45 @@
+{{ define "send_money_form" }} {{ if .Form.Errors.general }}
+<div class="alert-banner danger">{{ .Form.Errors.general }}</div>
+{{ end }}
+<form hx-put="/accounts/{{ .Account.ID }}/send-money">
+  <div>
+    <label for="name">Recipient</label>
+    <input
+      hx-get="/banks/{{.Account.Customer.Bank.ID}}/customers"
+      hx-trigger="input changed delay:500ms, click, search"
+      hx-target="#search-results"
+      id="name"
+      name="name"
+      type="search"
+      autocomplete="off"
+      onblur="hideSuggestions()"
+      required
+    />
+    <div id="search-results"></div>
+    <input id="recipient-field" type="hidden" name="recipient" autocomplete="off" required />
+  </div>
+  <div>
+    <label for="amount">Amount</label>
+    <input
+      id="amount"
+      name="amount"
+      type="number"
+      step="0.01"
+      autocomplete="off"
+      inputmode="decimal"
+      required
+    />
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <input id="description" name="description" type="text" autocomplete="off" required />
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Submit</div>
+      <div class="htmx-indicator text-muted text-base">Submitting...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

@@ -1,0 +1,28 @@
+{{ define "accounts" }}
+<table class="w-full table-auto overflow-hidden">
+  <thead>
+    <tr>
+      <th class="p-2 text-left">Account</th>
+      <th class="p-2 text-right">Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range .Accounts }}
+    <tr onclick="goToAccount('{{.ID}}')" class="border-b hover:cursor-pointer">
+      <td class="text-left py-1.5 px-2">
+        <div class="font-semibold">{{ .Name }}</div>
+      </td>
+      <td class="text-right px-2">{{ currency .Balance }}</td>
+    </tr>
+    {{ end }}
+  </tbody>
+  <caption class="sr-only">
+    List of accounts belonging to the customer
+  </caption>
+</table>
+<script>
+  function goToAccount(id) {
+    window.location.href = `/accounts/${id}`;
+  }
+</script>
+{{ end }}

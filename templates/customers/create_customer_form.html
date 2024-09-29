@@ -1,0 +1,63 @@
+{{ define "create_customer_form" }}
+<form
+  hx-put="/banks/{{.Bank.ID}}/create-customer"
+  hx-swap="outerHTML"
+  hx-disabled-elt="button, input, textarea"
+>
+  {{ if .Form.Errors.general }}
+  <div class="alert-banner warning">{{ .Form.Errors.general }}</div>
+  {{ end }} {{ if .Form.Data.success }}
+  <div class="alert-banner success">{{ .Form.Data.success }}</div>
+  {{ end }}
+  <div>
+    <label for="first_name">First name</label>
+    <input
+      id="first_name"
+      name="first_name"
+      type="text"
+      autocomplete="off"
+      placeholder="First name"
+      maxlength="20"
+      required
+      value="{{ .Form.Data.first_name }}"
+    />
+  </div>
+  <div>
+    <label for="last_name">Last name</label>
+    <input
+      id="last_name"
+      name="last_name"
+      type="text"
+      autocomplete="off"
+      placeholder="Last name"
+      maxlength="20"
+      required
+      value="{{ .Form.Data.last_name }}"
+    />
+  </div>
+  <div>
+    <label for="pin">PIN</label>
+    <input
+      id="pin"
+      name="pin"
+      type="text"
+      autocomplete="off"
+      placeholder="PIN"
+      maxlength="6"
+      minlength="4"
+      required
+      inputmode="numeric"
+    />
+    {{ if .Form.Errors.pin }}
+    <div class="error-message">{{ .Form.Errors.pin }}</div>
+    {{ end }}
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Create Customer</div>
+      <div class="htmx-indicator">Creating...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

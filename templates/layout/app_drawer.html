@@ -1,0 +1,88 @@
+{{ define "app_drawer" }}
+<div id="app-drawer" class="app-drawer" hx-boost="true">
+  <div class="underlay" onclick="closeAppDrawer()"></div>
+  <aside class="flex flex-col gap-4 content">
+    <h1 class="font-bold">Navigation</h1>
+    {{ if .SignedIn }}
+    <section class="flex items-center gap-2">
+      <img class="border-2 rounded-full size-16 p-1" src="{{ .CurrentUser.ImageURL }}" alt="profile image" />
+      <div class="flex flex-col">
+        <h1 class="flex gap-1 items-center text-lg font-extrabold">
+          {{ .CurrentUser.FullName }}
+        </h1>
+        <span class="text-muted -mt-1">@{{ .CurrentUser.Username }}</span>
+      </div>
+    </section>
+    {{ end }}
+    <ul>
+      {{ if .SignedIn }}
+      <li><a href="/" class="active">Dashboard</a></li>
+      {{ if .CurrentUser.IsAdmin }}
+        <li>
+          <div id="control-panel" class="details">
+            <div class="summary" onclick="toggleAccordion('control-panel')">Control Panel</div>
+            <ul>
+              <li><a href="/control-panel">Application Insights</a></li>
+              <li><a href="/control-panel/users">Manage Users</a></li>
+              <li><a href="/control-panel/announcements">Announcements</a></li>
+              <li><a href="/control-panel/polls">Polls</a></li>
+            </ul>
+          </div>
+        </li>
+      {{ end }}
+      <li>
+        <div id="settings" class="details">
+          <div class="summary" onclick="toggleAccordion('settings')">Settings</div>
+          <ul>
+            <li><a href="/preferences">Preferences</a></li>
+            <li><a href="/settings">Profile</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a hx-delete="/signout">Sign out</a></li>
+      {{ else if .CustomerSignedIn }}
+      <li><a href="/">Dashboard</a></li>
+      <li><a hx-delete="/sessions/customer">Sign out</a></li>
+      {{ else }}
+      <li>
+        <li><a href="/">Homepage</a></li>
+        <li><a href="/signin">Sign in</a></li>
+        <li><a href="/signup">Sign up</a></li>
+      </li>
+      {{ end }}
+    </ul>
+  </aside>
+</div>
+<script>
+  setActiveLink();
+
+  function toggleAccordion(elementId) {
+    const details = document.getElementById(elementId);
+
+    if (details.classList.contains('opened')) {
+      details.classList.remove('opened');
+    } else {
+      details.classList.add('opened');
+    }
+  }
+
+  function setActiveLink() {
+    const links = document.querySelectorAll('#app-drawer ul li a');
+    const currentUrl = window.location;
+
+    links.forEach(link => {
+      link.classList.remove('active');
+
+      if (link.getAttribute('href') === currentUrl.pathname) {
+        link.classList.add('active');
+
+        // This will open any details if a child is active
+        const parent = link.parentElement.parentElement.parentElement;
+        if (parent && parent.classList.contains('details')) {
+          parent.classList.add('opened');
+        }
+      }
+    });
+  }
+</script>
+{{ end }}

@@ -1,0 +1,44 @@
+{{ define "chart_deposits_vs_withdrawals" }}
+<div class="flex mx-auto w-full sm:w-3/4">
+  <canvas id="deposits-versus-withdrawals"></canvas>
+</div>
+<script
+  src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  document.body.addEventListener("htmx:afterSettle", function () {
+    waitForChartJSThenLoad();
+  });
+
+  function waitForChartJSThenLoad() {
+    const interval = setInterval(() => {
+      try {
+        if (Chart) {
+        clearInterval(interval);
+          loadChart();
+        }
+      } catch {}
+    }, 100);
+  }
+
+  function loadChart() {
+    const deposits = {{ .Deposits }};
+    const withdrawals = Math.abs({{ .Withdrawals }});
+
+    const data = {
+      labels: ["Deposits", "Withdrawals"],
+      datasets: [
+        {
+          label: "",
+          data: [deposits, withdrawals],
+          backgroundColor: ["hsla(133, 75%, 25%, 0.5)", "hsla(0, 100%, 50%, 0.5)"],
+        },
+      ],
+    };
+    const config = { type: "bar", data, options: { plugins: { legend: { display: false } } } };
+    new Chart(document.getElementById("deposits-versus-withdrawals").getContext("2d"), config);
+  }
+</script>
+{{ end }}

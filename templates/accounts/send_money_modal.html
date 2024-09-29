@@ -1,0 +1,49 @@
+{{ define "send_money_modal" }}
+<section class="wrapper">
+  <header>
+    <h1>Send Money</h1>
+    <p class="text-muted">
+      You can send money, without approvals, to other customers within this bank. You will not be
+      able to send funds that exceed your current account balance.
+    </p>
+  </header>
+  <div id="send-money-form">{{ template "send_money_form" . }}</div>
+</section>
+{{ end }} {{ define "search_bank_customers" }}
+<div id="search-suggestions" class="mt-2">
+  <strong class="text-sm">Suggestions:</strong>
+  <ul class="flex flex-col w-full border rounded-xl mt-2 shadow">
+    {{ if gt (len .) 0 }} {{ range . }}
+    <li class="w-full border-b first:rounded-t-xl last:border-0 last:rounded-b-xl ghost">
+      <button
+        type="button"
+        onmousedown="selectRecipient({{ .ID }}, {{ .FullName }})"
+        class="text-left w-full py-2 px-3"
+      >
+        {{ .FullName }}
+      </button>
+    </li>
+    {{ end }} {{ else }}
+    <div class="px-3 py-2 text-muted">No results found. Try another search.</div>
+    {{ end }}
+  </ul>
+  <script>
+    function hideSuggestions() {
+      const searchSuggestions = document.getElementById("search-suggestions");
+
+      if (searchSuggestions) {
+        searchSuggestions.style.display = "none";
+      }
+    }
+
+    function selectRecipient(customerId, fullName) {
+      const recipientField = document.getElementById("recipient-field");
+      const searchField = document.getElementById("name");
+
+      recipientField.value = customerId;
+      searchField.value = fullName;
+      hideSuggestions();
+    }
+  </script>
+</div>
+{{ end }}

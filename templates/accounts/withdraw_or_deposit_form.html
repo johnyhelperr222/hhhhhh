@@ -1,0 +1,59 @@
+{{ define "withdraw_or_deposit_form" }}
+<form
+  hx-put="/accounts/{{.Account.ID}}/withdraw-or-deposit"
+  hx-swap="outerHTML"
+  hx-disabled-elt="input, select, button"
+>
+  {{ if .Form.Errors.general }}
+  <div class="alert-banner warning">{{ .Form.Errors.general }}</div>
+  {{ end }}
+  <div class="flex gap-4">
+    <div class="w-full">
+      <label for="type">Transfer Type</label>
+      <select id="type" name="type" required>
+        <option disabled selected value="">Select one...</option>
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+      </select>
+    </div>
+    <div class="w-full">
+      <label for="amount">Amount</label>
+      <input
+        id="amount"
+        name="amount"
+        type="number"
+        step=".01"
+        autocomplete="off"
+        value="{{ .Form.Data.amount }}"
+        inputmode="decimal"
+        required
+      />
+      {{ if .Form.Errors.amount }}
+      <div class="error-message">{{ .Form.Errors.amount }}</div>
+      {{ end }}
+    </div>
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <input
+      id="description"
+      name="description"
+      type="text"
+      placeholder="Short description..."
+      autocomplete="off"
+      value="{{ .Form.Data.description }}"
+      required
+    />
+    {{ if .Form.Errors.description }}
+    <div class="error-message">{{ .Form.Errors.description }}</div>
+    {{ end }}
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Submit</div>
+      <div class="htmx-indicator">Submitting...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

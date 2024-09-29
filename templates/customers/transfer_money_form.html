@@ -1,0 +1,60 @@
+{{ define "transfer_money_form" }}
+<form
+  hx-put="/transactions"
+  hx-swap="outerHTML"
+  hx-disabled-elt="select, input, button"
+  class="flex flex-col gap-2"
+>
+  {{ if eq (len .Accounts) 1}}
+  <input name="account_id" value="{{ .PrimaryAccount.ID }}" type="hidden" />
+  {{ else }}
+  <label for="account">Select an Account</label>
+  <select id="account" name="account_id" required>
+    <option disabled selected value="">Select an Account...</option>
+    {{ range .Accounts }}
+    <option value="{{ .ID }}">{{ .Name }}</option>
+    {{ end }}
+  </select>
+  {{ end }}
+  <div class="flex gap-4">
+    <div class="flex flex-col gap-1 w-full">
+      <label for="transaction_type">Transfer Type</label>
+      <select id="transaction_type" name="type" required>
+        <option disabled selected value="">Select one...</option>
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+      </select>
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+      <label for="transaction_amount">Amount</label>
+      <input
+        id="transaction_amount"
+        name="amount"
+        type="number"
+        inputmode="decimal"
+        step=".01"
+        autocomplete="off"
+        required
+      />
+    </div>
+  </div>
+  <div class="flex flex-col gap-1">
+    <label for="transaction_description">Description</label>
+    <input
+      id="transaction_description"
+      name="description"
+      type="text"
+      required
+      autocomplete="off"
+      placeholder="Short description for this"
+    />
+  </div>
+  <div class="flex gap-2 mt-2">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Complete Transfer</div>
+      <div class="htmx-indicator">Creating...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Reset</button>
+  </div>
+</form>
+{{ end }}

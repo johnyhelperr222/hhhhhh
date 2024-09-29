@@ -1,0 +1,48 @@
+{{ define "announcements" }}
+<!DOCTYPE html>
+<html lang="en" theme="{{.Theme}}">
+  <head>
+    <title>Fun Banking | Announcements from the Team</title>
+    <meta name="description" content="Fun Banking - Announcements from the team" />
+    {{ template "layout/head" . }}
+  </head>
+  <body>
+    {{ template "layout/navbar" . }}
+    <main class="flex flex-col gap-4 mt-2 mb-4 container">
+      <section class="card outlined flex flex-col gap-4">
+        <div>
+          <h1 class="text-xl font-extrabold">Recent Announcements</h1>
+          <p class="text-muted">
+            Stay in the loop! Here are some of the latest updates from the Fun Banking team.
+          </p>
+        </div>
+        <ol class="flex flex-col gap-4">
+          {{ range .AnnouncementsPagination.Items }}
+          <li class="flex flex-col gap-2 border-b pb-4 last:border-b-0">
+            <div>
+              <h2 class="text-lg font-extrabold -mb-1">{{ .Title }}</h2>
+              <time class="text-muted text-xs -mt-3">Posted on {{ datetime .CreatedAt }}</time>
+            </div>
+            <div>{{ html .ShortDescription }}...</div>
+            <a
+              class="pill filled w-fit px-4 py-2 font-semibold mt-2 text-sm"
+              href="/announcements/{{.ID}}"
+            >
+              Read Full Article
+            </a>
+          </li>
+          {{ end }}
+        </ol>
+        <div hx-boost="true" class="pagination">
+          {{ if .AnnouncementsPagination.HasPreviousPage }}
+          <a href="/announcements?page={{sub .AnnouncementsPagination.PageNumber 1}}">Previous</a>
+          {{ end }} {{ if .AnnouncementsPagination.HasNextPage }}
+          <a href="/announcements?page={{add .AnnouncementsPagination.PageNumber 1}}"> Next </a>
+          {{ end }}
+        </div>
+      </section>
+    </main>
+    {{ template "layout/footer" . }} {{ template "layout/scripts" . }}
+  </body>
+</html>
+{{ end }}

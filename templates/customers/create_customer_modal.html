@@ -1,0 +1,11 @@
+{{ define "create_customer_modal" }}
+<section class="wrapper">
+  <header>
+    <h1>Create a Customer</h1>
+    <p class="text-muted">
+      A customer can access your bank via their PIN and make transactions on their account.
+    </p>
+  </header>
+  {{ template "create_customer_form" . }}
+</section>
+{{ end }}

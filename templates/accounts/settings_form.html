@@ -1,0 +1,36 @@
+{{ define "account_settings_form" }}
+<form
+  hx-patch="/accounts/{{.Account.ID}}"
+  hx-swap="outerHTML"
+  hx-disabled-elt="button, input, textarea"
+>
+  {{ if .Form.Errors.general }}
+  <div class="alert-banner warning">{{ .Form.Errors.general }}</div>
+  {{ end }}
+  <div>
+    <label for="name">Name</label>
+    <input
+      id="name"
+      name="name"
+      type="text"
+      autocomplete="off"
+      placeholder="Name"
+      value="{{ .Form.Data.name }}"
+      maxlength="25"
+    />
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" name="description" autocomplete="off">
+{{ .Form.Data.description}}</textarea
+    >
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Update</div>
+      <div class="htmx-indicator">Updating...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

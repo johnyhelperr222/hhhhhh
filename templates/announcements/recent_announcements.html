@@ -1,0 +1,18 @@
+{{ define "recent_announcements" }} {{ if gt (len .) 0 }}
+<ol id="recent_announcements" class="relative flex flex-col gap-0 border-l pl-4">
+  {{ range . }}
+  <li class="text-sm py-1">
+    <div></div>
+    <time class="text-xs text-muted">{{ datetime .CreatedAt }}</time>
+    <div class="whitespace-nowrap text-ellipsis overflow-hidden">
+      <a href="/announcements/{{.ID}}" class="link-hover hover:underline">{{ .Title }}</a>
+    </div>
+  </li>
+  {{ end }}
+</ol>
+<a class="link-hover hover:underline text-xs mt-1" href="/announcements">
+  View more announcements
+</a>
+{{ else }}
+<div class="text-sm text-muted">There are no announcements at this time</div>
+{{ end }} {{ end }}

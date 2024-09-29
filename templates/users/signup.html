@@ -1,0 +1,27 @@
+{{ define "users/signup" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Fun Banking | Create an Account with Us</title>
+    <meta
+      name="description"
+      content="Fun Banking - Create an Account with Fun Banking, your free online banking simulator tailored for teachers and families."
+    />
+    {{ template "layout/head" . }}
+  </head>
+  <body>
+    {{ template "layout/navbar" . }}
+    <main class="flex flex-col items-center container mt-2 mb-4">
+      <section class="card bg-white border max-w-xl w-full">
+        <h1 class="font-extrabold text-xl">Create a Fun Banking Account</h1>
+        <div hx-boost="true" class="mb-4">
+          Create an account with us for free. Already have an account?
+          <a class="link" href="signin">Sign in</a>.
+        </div>
+        {{ template "users/signup_form" . }}
+      </section>
+    </main>
+    {{ template "layout/footer" . }} {{ template "layout/scripts" . }}
+  </body>
+</html>
+{{ end }}

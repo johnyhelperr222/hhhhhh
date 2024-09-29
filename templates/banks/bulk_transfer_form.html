@@ -1,0 +1,44 @@
+{{ define "bulk_transfer_form" }}
+<form hx-put="/transactions/bulk" hx-swap="outerHTML">
+  <input name="customer_ids" type="hidden" value="{{ .Form.Data.customer_ids }}" />
+  <div class="flex gap-4">
+    <div class="w-full">
+      <label for="transaction_type">Transfer Type</label>
+      <select id="transaction_type" name="type" required>
+        <option disabled selected value="">Select one...</option>
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+      </select>
+    </div>
+    <div class="w-full">
+      <label for="transaction_amount">Amount</label>
+      <input
+        id="transaction_amount"
+        name="amount"
+        type="number"
+        step=".01"
+        inputmode="decimal"
+        required
+      />
+    </div>
+  </div>
+  <div>
+    <label for="transaction_description">Short description</label>
+    <input
+      id="transaction_description"
+      name="description"
+      type="text"
+      required
+      placeholder="Short description for this"
+      autocomplete="off"
+    />
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Complete Transfer</div>
+      <div class="htmx-indicator">Working on it...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Reset</button>
+  </div>
+</form>
+{{ end }}

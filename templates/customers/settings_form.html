@@ -1,0 +1,62 @@
+{{ define "customer_settings_form" }}
+<form
+  hx-patch="/customers/{{.Customer.ID}}"
+  hx-swap="outerHTML"
+  hx-disabled-elt="button, input, textarea"
+>
+  {{ if .Form.Errors.general }}
+  <div class="alert-banner warning">{{ .Form.Errors.general }}</div>
+  {{ end }} {{ if .Form.Data.success }}
+  <div class="alert-banner success">{{ .Form.Data.success }}</div>
+  {{ end }}
+  <div>
+    <label for="first_name">First name</label>
+    <input
+      id="first_name"
+      name="first_name"
+      type="text"
+      autocomplete="off"
+      placeholder="First name"
+      required
+      value="{{ .Form.Data.first_name }}"
+      autofocus
+    />
+  </div>
+  <div>
+    <label for="first_name">Last name</label>
+    <input
+      id="last_name"
+      name="last_name"
+      type="text"
+      autocomplete="off"
+      placeholder="Last name"
+      required
+      value="{{ .Form.Data.last_name }}"
+      autofocus
+    />
+  </div>
+  <div>
+    <label for="first_name">PIN</label>
+    <input
+      id="pin"
+      name="pin"
+      type="text"
+      autocomplete="off"
+      placeholder="PIN"
+      value="{{ .Form.Data.pin}}"
+      required
+      inputmode="numeric"
+    />
+    {{ if .Form.Errors.pin }}
+    <div class="error-message">{{ .Form.Errors.pin }}</div>
+    {{ end }}
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Update</div>
+      <div class="htmx-indicator">Updating...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

@@ -1,0 +1,43 @@
+{{ define "update_bank_form" }}
+<form hx-patch="/banks/{{.Bank.ID}}" hx-swap="outerHTML" hx-disabled-elt="button, input, textarea">
+  {{ if .Form.Errors.general }}
+  <div class="alert-banner warning">{{ .Form.Errors.general }}</div>
+  {{ end }}
+  <div>
+    <label for="name">Bank name</label>
+    <input
+      id="name"
+      name="name"
+      type="text"
+      autocomplete="off"
+      placeholder="Bank name"
+      required
+      value="{{ .Form.Data.name }}"
+      maxlength="25"
+    />
+    {{ if .Form.Errors.name }}
+    <div class="error-message">{{ .Form.Errors.name }}</div>
+    {{ end }}
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      name="description"
+      autocomplete="off"
+      class="py-[16px] px-[20px] resize-none h-32"
+      required
+      placeholder="Description"
+    >
+{{ .Form.Data.description }}</textarea
+    >
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn-primary">
+      <div class="htmx-toggle">Update Bank</div>
+      <div class="htmx-indicator">Updating...</div>
+    </button>
+    <button type="reset" onclick="closeModal()">Cancel</button>
+  </div>
+</form>
+{{ end }}

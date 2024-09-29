@@ -1,0 +1,114 @@
+{{ define "users/signup_form" }}
+<form hx-put="users" hx-disabled-elt="button, input" class="flex flex-col gap-5">
+  {{ if and . .Form.Errors.general }}
+  <div class="alert-banner danger">{{ .Form.Errors.general }}</div>
+  {{ end }} {{ if and . .Form.Data.success }}
+  <div class="alert-banner success">{{ .Form.Data.success }}</div>
+  {{ end }}
+  <div class="flex flex-col gap-2">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="first_name">First Name</label>
+        <input
+          id="first_name"
+          name="first_name"
+          type="text"
+          maxlength="20"
+          value="{{ .Form.Data.first_name }}"
+          autocomplete="given-name"
+          placeholder="First name"
+          required
+          autofocus
+        />
+      </div>
+      <div>
+        <label for="last_name">Last Name</label>
+        <input
+          id="last_name"
+          name="last_name"
+          type="text"
+          maxlength="20"
+          value="{{ .Form.Data.last_name }}"
+          autocomplete="family-name"
+          required
+          placeholder="Last name"
+        />
+      </div>
+    </div>
+    <div>
+      <label for="email">E-mail Address</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        value="{{ .Form.Data.email }}"
+        autocomplete="email"
+        placeholder="E-mail address"
+        required
+      />
+    </div>
+    <div>
+      <label for="username">Username</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        value="{{ .Form.Data.username }}"
+        autocomplete="username"
+        placeholder="Username"
+        maxlength="12"
+        required
+      />
+      <div class="error-message">{{ .Form.Errors.username }}</div>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Password"
+        maxlength="50"
+        required
+      />
+      {{ if and . .Form.Errors.passwords_dont_match }}
+      <div class="error-message">{{ .Form.Errors.passwords_dont_match }}</div>
+      {{ end }} {{ if and . .Form.Errors.password }}
+      <div class="error-message">{{ .Form.Errors.password }}</div>
+      {{ end }}
+    </div>
+    <div>
+      <label for="password_confirmation">Confirm Password</label>
+      <input
+        id="password_confirmation"
+        name="password_confirmation"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Confirm Password"
+        maxlength="50"
+        required
+      />
+      {{ if and . .Form.Errors.passwords_dont_match }}
+      <div class="error-message">{{ .Form.Errors.passwords_dont_match }}</div>
+      {{ end }}
+    </div>
+    <div class="text-muted text-xs">
+      By signing up you agree to our
+      <a href="/terms" class="link">Terms</a> and
+      <a href="/privacy" class="link">Privacy</a> policies
+    </div>
+  </div>
+  <div class="flex gap-2">
+    <button
+      id="submit"
+      class="bg-emerald-700 font-extrabold text-white hover:bg-emerald-800 disabled:bg-gray-200"
+      type="submit"
+    >
+      <div class="htmx-toggle">Sign up</div>
+      <div class="htmx-indicator">Creating your Account...</div>
+    </button>
+    <button type="reset">Cancel</button>
+  </div>
+</form>
+{{ end }}
